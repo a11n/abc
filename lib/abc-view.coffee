@@ -5,12 +5,6 @@ class AbcView
     @element = document.createElement('div')
     @element.classList.add('abc')
 
-    # Create message element
-    message = document.createElement('div')
-    message.textContent = "The Abc package is Alive! It's ALIVE!"
-    message.classList.add('message')
-    @element.appendChild(message)
-
   # Returns an object that can be retrieved when package is activated
   serialize: ->
 
@@ -20,3 +14,9 @@ class AbcView
 
   getElement: ->
     @element
+
+  setData: (data) ->
+    display = document.createElement('div')
+    display.textContent = data
+    display.classList.add('display')
+    @element.appendChild(display)
