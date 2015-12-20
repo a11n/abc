@@ -1,0 +1,19 @@
+{
+  "name": "abc",
+  "main": "./lib/abc",
+  "version": "0.1.0",
+  "description": "An ATOM package for ABC notation.",
+  "keywords": [
+    'ABC', 'ABC notation', 'music'
+  ],
+  "activationCommands": {
+    "atom-workspace": "abc:toggle"
+  },
+  "repository": "https://github.com/atom/abc",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}
