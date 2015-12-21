@@ -1,15 +1,15 @@
 {
-  "name": "abc",
+  "name": "abc-preview",
   "main": "./lib/abc",
   "version": "0.1.0",
-  "description": "An ATOM package for ABC notation.",
+  "description": "An ATOM package for previewing abc notations.",
   "keywords": [
     "ABC", "ABC notation", "music"
   ],
   "activationCommands": {
     "atom-workspace": "abc:toggle"
   },
-  "repository": "https://github.com/atom/abc",
+  "repository": "https://github.com/a11n/atom-abc-preview.git",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
