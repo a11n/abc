@@ -10,9 +10,9 @@ editorFor = (editorId) ->
   null
 
 module.exports =
-class AboutView extends ScrollView
+class AbcView extends ScrollView
   @content: ->
-    @div class: 'abc', tabindex: -1, =>
+    @div class: 'native-key-bindings abc', tabindex: -1, =>
       @div id: 'abc-notation'
 
   onDidChangeTitle: -> new Disposable ->
