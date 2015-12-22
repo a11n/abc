@@ -2,6 +2,8 @@
 
 An [ATOM](https://atom.io) package for previewing [abc notations](http://abcnotation.com/wiki/abc:standard:v2.1).
 
+![Screenshot](screenshot.png)
+
 ##What is abc?
 >Abc is a text-based music notation system designed to be comprehensible by both people and computers. Music notated in abc is written using characters - letter, digits and punctuation marks - on paper or in computer files. [1]
 
