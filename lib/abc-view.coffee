@@ -2,7 +2,7 @@ ABC = require './abcjs_basic_noraphael_2.3-min.js'
 Raphael = require 'raphael'
 
 {ScrollView} = require 'atom-space-pen-views'
-{Disposable} = require 'atom'
+{Disposable, CompositeDisposable} = require 'atom'
 
 editorFor = (editorId) ->
   for editor in atom.workspace.getTextEditors()
@@ -21,15 +21,25 @@ class AbcView extends ScrollView
   initialize: ({@editorId}) ->
     @editor = editorFor(@editorId)
     @title = @editor.getTitle()
-    @text = @editor.getText()
+
+    changeHandler = =>
+      @renderAbc()
+
+    @disposables = new CompositeDisposable
+    @disposables.add @editor.getBuffer().onDidStopChanging -> changeHandler()
 
   attached: ->
-    ABCJS.renderAbc('abc-notation', @text)
+    @renderAbc()
 
   serialize: ->
     deserializer: @constructor.name
     editorId: @getEditorId()
 
+  destroy: ->
+    @disposables.dispose()
+
   getEditorId: -> @editorId
 
   getTitle: -> @title
+
+  renderAbc: -> ABCJS.renderAbc('abc-notation', @editor.getText())
