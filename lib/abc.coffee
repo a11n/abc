@@ -1,35 +1,43 @@
-AbcView = require './abc-view'
 {CompositeDisposable} = require 'atom'
 
+AbcView = null
+
+abcUri = /abc:\/\/editor\/(\d+)/
+
+editorIdFrom = (uri) ->
+  return uri.match(abcUri)[1]
+
+createAbcView = (state) ->
+  AbcView ?= require './abc-view'
+  new AbcView(state)
+
+isAbcView = (object) ->
+  AbcView ?= require './abc-view'
+  object instanceof AbcView
+
+atom.deserializers.add
+  name: 'AbcView'
+  deserialize: (state) -> createAbcView(state)
+
 module.exports = Abc =
-  abcView: null
-  rightPanel: null
-  subscriptions: null
-
-  activate: (state) ->
-    @abcView = new AbcView(state.abcViewState)
-    @rightPanel = atom.workspace.addRightPanel(item: @abcView.getElement(), visible: false)
-
-    # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
+  activate: ->
     @subscriptions = new CompositeDisposable
 
-    # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'abc:toggle': => @toggle()
+    @subscriptions.add atom.workspace.addOpener (uri) ->
+      createAbcView(editorId: editorIdFrom(uri)) if uri.match(abcUri)
 
-  deactivate: ->
-    @rightPanel.destroy()
-    @subscriptions.dispose()
-    @abcView.destroy()
-
-  serialize: ->
-    abcViewState: @abcView.serialize()
+    atom.commands.add 'atom-workspace', 'abc:toggle': => @toggle()
 
   toggle: ->
-    console.log 'Abc was toggled!'
+    if isAbcView(atom.workspace.getActivePaneItem())
+      atom.workspace.destroyActivePaneItem()
+      return
 
-    if @rightPanel.isVisible()
-      @rightPanel.hide()
-    else
-      data = atom.workspace.getActiveTextEditor().getText()
-      @rightPanel.show()
-      @abcView.setData(data)
+    editor = atom.workspace.getActiveTextEditor()
+    return unless editor?
+
+    uri = "abc://editor/#{editor.id}"
+    atom.workspace.open(uri, searchAllPanes: true, split: 'right')
+
+  deactivate: ->
+    @subscriptions.dispose()
